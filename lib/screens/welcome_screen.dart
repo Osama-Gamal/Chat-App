@@ -21,15 +21,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        /*decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                gradient: LinearGradient(colors: <Color>[
-                  Color(0xff014531),
-                  Color(0xFF1c8164),
-                  Colors.green,
-                ]),
-              ),*/
-        decoration: BoxDecoration(
+
+        /*decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(5)),
           boxShadow: <BoxShadow>[
             BoxShadow(
@@ -48,7 +41,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               Color.fromARGB(255, 36, 170, 81),
             ],
           ),
-        ),
+        ),*/
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
@@ -73,29 +66,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               const SizedBox(
                 height: 30,
               ),
-              TextField(
-                keyboardType: TextInputType.emailAddress,
-                onChanged: ((value) => {}),
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: "Enter Your Email",
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                ),
-              ),
+
               welcomeBtn(
                 btnColor: Colors.blue,
                 btnTxt: "Sign In",
@@ -113,6 +84,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               Row(
                 children: [
                   Expanded(
+                    flex: 1,
                     child: Card(
                       child: ListTile(
                         onTap: _openCountryPickerDialog,
@@ -120,7 +92,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                     ),
                   ),
-                  Text("data"),
+                  Expanded(
+                    flex: 2,
+                    child: TextField(
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: ((value) => {}),
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "Enter Your Phone Number",
+                        contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue, width: 1),
+                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(10),),),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -134,9 +131,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         children: <Widget>[
           CountryPickerUtils.getDefaultFlagImage(country),
           const SizedBox(width: 8.0),
-          Text("+${country.phoneCode}"),
+          Text("+${country.phoneCode}",style: const TextStyle(fontSize: 15),),
           const SizedBox(width: 8.0),
-          Flexible(child: Text(country.name))
         ],
       );
 
