@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_project/screens/MainScreen.dart';
 import 'package:firebase_project/screens/chatScreen.dart';
 import 'package:firebase_project/screens/introScreen.dart';
 import 'package:firebase_project/screens/loginScreen.dart';
@@ -28,12 +29,13 @@ class MyApp extends StatelessWidget {
       //home: const ChatScreen(),
       initialRoute: _auth.currentUser != null
           ? ChatScreen.screenRoute
-          : IntroScreen.screenRoute,
+          : HomeScreen.screenRoute,
       routes: {
         IntroScreen.screenRoute: (context) => const IntroScreen(),
         WelcomeScreen.screenRoute: (context) => const WelcomeScreen(),
         LoginScreen.screenRoute: (context) => const LoginScreen(),
         RegisterScreen.screenRoute: (context) => const RegisterScreen(),
+        HomeScreen.screenRoute: (context) => HomeScreen(),
         ChatScreen.screenRoute: (context) => const ChatScreen(),
       },
     );

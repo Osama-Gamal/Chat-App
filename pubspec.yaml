@@ -40,6 +40,9 @@ dependencies:
   modal_progress_hud_nsn: ^0.3.0
   introduction_screen: ^3.0.2
   country_pickers: ^2.0.0
+  matrix4_transform: ^2.0.1
+  carousel_slider: ^4.1.1
+  percent_indicator: ^4.2.2
 
 dev_dependencies:
   flutter_test:

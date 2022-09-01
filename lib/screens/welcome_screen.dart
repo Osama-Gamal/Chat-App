@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_pickers.dart';
 
+import 'MainScreen.dart';
+
 class WelcomeScreen extends StatefulWidget {
   static const String screenRoute = 'WelcomeScreen';
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -151,7 +153,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  print('+' + _selectedDialogCountry.phoneCode + numPhone);
+                  //print('+' + _selectedDialogCountry.phoneCode + numPhone);
+                  Navigator.pushNamed(context, HomeScreen.screenRoute);
                   //_auth.signInWithPhoneNumber(_selectedDialogCountry.phoneCode+numPhone);
                 },
                 style: ElevatedButton.styleFrom(
