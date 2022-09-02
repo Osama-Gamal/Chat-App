@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                       onPressed: () {},
                     ),
-                    Flexible(flex: 2, child: Container()),
+                    Flexible(flex: 1, child: Container()),
                     RichText(
                       textAlign: TextAlign.center,
                       text: const TextSpan(
@@ -57,14 +57,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   TextStyle(color: Colors.black, fontSize: 30),
                             ),
                             TextSpan(
-                              text: 'at',
+                              text: 'at All',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 30),
                             ),
                           ]),
                     ),
                     Flexible(flex: 1, child: Container()),
-                    Padding(
+                    /*Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: CircularPercentIndicator(
                         radius: 15.0,
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             const Color.fromARGB(255, 216, 216, 216),
                         progressColor: Colors.blue,
                       ),
-                    ),
+                    ),*/
                     IconButton(
                         onPressed: (() => {}),
                         icon: const Icon(
@@ -96,8 +96,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 children: [
                   Container(
                       height: size.height * 0.8854,
+                      padding: const EdgeInsets.all(1.0),
                       decoration: const BoxDecoration(
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 232, 244, 242),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(18),
                             topRight: Radius.circular(18)),

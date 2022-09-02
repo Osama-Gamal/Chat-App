@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       ),
       //home: const ChatScreen(),
       initialRoute: _auth.currentUser != null
-          ? ChatScreen.screenRoute
+          ? HomeScreen.screenRoute
           : HomeScreen.screenRoute,
       routes: {
         IntroScreen.screenRoute: (context) => const IntroScreen(),
