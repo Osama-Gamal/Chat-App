@@ -107,7 +107,7 @@ class _ChatsPageState extends State<ChatsPage> {
                 ),
               ),
             ),
-            MessageStreamBuilder(),
+            const MessageStreamBuilder(),
           ],
         ),
       ),
@@ -158,7 +158,7 @@ class MessageStreamBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection("messages").orderBy("time").snapshots(),
+        stream: _firestore.collection("user").orderBy("usrTime").snapshots(),
         builder: (context, snapshot) {
           List<MessageLine> messageWiedgets = [];
 
@@ -169,21 +169,23 @@ class MessageStreamBuilder extends StatelessWidget {
           }
           final messages = snapshot.data!.docs.reversed;
           for (var message in messages) {
-            final messageTxt = message.get("text");
-            final messageSender = message.get('sender');
+            final usrImage = message.get("usrImage");
+            final usrName = message.get('usrName');
             final currentUser = signedUser.email;
 
             final messageWidget = MessageLine(
-              sender: messageSender,
-              text: messageTxt,
-              isMe: currentUser == messageSender,
+              usrName: usrName,
+              usrImage: usrImage,
+              isMe: currentUser == usrName,
             );
             messageWiedgets.add(messageWidget);
           }
           return Expanded(
             child: ListView(
               reverse: true,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 0,
+              ),
               children: messageWiedgets,
             ),
           );
@@ -191,6 +193,54 @@ class MessageStreamBuilder extends StatelessWidget {
   }
 }
 
+class MessageLine extends StatelessWidget {
+  const MessageLine({this.usrName, this.usrImage, required this.isMe, key})
+      : super(key: key);
+
+  final String? usrName;
+  final String? usrImage;
+  final bool isMe;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Container(
+        width: double.infinity,
+        height: 100,
+        padding: const EdgeInsets.all(8.0),
+        color: Colors.white,
+        child: Column(
+          children: [
+            Row(
+              children: const [
+                CircleAvatar(
+                  backgroundColor: Color.fromARGB(255, 0, 80, 72),
+                  radius: 25,
+                  child: CircleAvatar(
+                    radius: 22,
+                    backgroundImage: AssetImage('assets/images/face7.jpg'),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "Jasmin Bill",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*
 class MessageLine extends StatelessWidget {
   const MessageLine({this.text, this.sender, required this.isMe, key})
       : super(key: key);
@@ -236,3 +286,4 @@ class MessageLine extends StatelessWidget {
     );
   }
 }
+*/

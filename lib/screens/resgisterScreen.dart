@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project/screens/chatScreen.dart';
 import 'package:firebase_project/widgets/my_btn.dart';
@@ -19,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late String email;
   late String password;
   bool showSpinner = false;
+  final _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +104,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
+                    _firestore.collection('user').add({
+                      'usrName': email,
+                      'usrID': _auth.currentUser?.uid,
+                      'usrPassword': password,
+                      'usrImage': 'none',
+                      'usrTime': FieldValue.serverTimestamp(),
+                    });
                     Navigator.pushNamed(context, ChatScreen.screenRoute);
                     setState(() {
                       showSpinner = false;

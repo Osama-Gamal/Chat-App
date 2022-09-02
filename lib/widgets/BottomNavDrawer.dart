@@ -74,7 +74,7 @@ class _BottomNavDrawerState extends State<BottomNavDrawer> {
                                 icon: Icon(
                                   Icons.home,
                                   color: currentIndex == 0
-                                      ? Colors.orange
+                                      ? const Color.fromARGB(255, 0, 80, 72)
                                       : Colors.grey.shade400,
                                 ),
                                 onPressed: () {
@@ -89,7 +89,7 @@ class _BottomNavDrawerState extends State<BottomNavDrawer> {
                               icon: Icon(
                                 Icons.restaurant_menu,
                                 color: currentIndex == 1
-                                    ? Colors.orange
+                                    ? const Color.fromARGB(255, 0, 80, 72)
                                     : Colors.grey.shade400,
                               ),
                               onPressed: () {
@@ -102,7 +102,7 @@ class _BottomNavDrawerState extends State<BottomNavDrawer> {
                               icon: Icon(
                                 Icons.bookmark,
                                 color: currentIndex == 2
-                                    ? Colors.orange
+                                    ? const Color.fromARGB(255, 0, 80, 72)
                                     : Colors.grey.shade400,
                               ),
                               onPressed: () {
@@ -112,7 +112,7 @@ class _BottomNavDrawerState extends State<BottomNavDrawer> {
                               icon: Icon(
                                 Icons.notifications,
                                 color: currentIndex == 3
-                                    ? Colors.orange
+                                    ? const Color.fromARGB(255, 0, 80, 72)
                                     : Colors.grey.shade400,
                               ),
                               onPressed: () {
