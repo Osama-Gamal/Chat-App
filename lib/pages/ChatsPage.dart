@@ -213,8 +213,8 @@ class MessageLine extends StatelessWidget {
         child: Column(
           children: [
             Row(
-              children: const [
-                CircleAvatar(
+              children: [
+                const CircleAvatar(
                   backgroundColor: Color.fromARGB(255, 0, 80, 72),
                   radius: 25,
                   child: CircleAvatar(
@@ -222,12 +222,12 @@ class MessageLine extends StatelessWidget {
                     backgroundImage: AssetImage('assets/images/face7.jpg'),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Text(
-                  "Jasmin Bill",
-                  style: TextStyle(
+                  usrName!,
+                  style: const TextStyle(
                     fontSize: 12,
                   ),
                 ),
