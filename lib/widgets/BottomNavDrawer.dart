@@ -1,3 +1,4 @@
+import 'package:firebase_project/screens/MainScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -6,15 +7,15 @@ import 'package:flutter/src/widgets/framework.dart';
 class BottomNavDrawer extends StatefulWidget {
   @override
   State<BottomNavDrawer> createState() => _BottomNavDrawerState();
+  static int currentIndex = 0;
 }
 
 class _BottomNavDrawerState extends State<BottomNavDrawer> {
   bool _expanded = true;
-  int currentIndex = 0;
 
   setBottomBarIndex(index) {
     setState(() {
-      currentIndex = index;
+      BottomNavDrawer.currentIndex = index;
     });
   }
 
@@ -107,11 +108,14 @@ class _BottomNavDrawerState extends State<BottomNavDrawer> {
         IconButton(
           icon: Icon(
             itemIcon,
-            color: currentIndex == bottomIndex
+            color: BottomNavDrawer.currentIndex == bottomIndex
                 ? const Color.fromARGB(255, 0, 80, 72)
                 : Colors.grey.shade400,
           ),
           onPressed: () {
+            HomeScreen.controller.animateToPage(bottomIndex,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease);
             setBottomBarIndex(bottomIndex);
           },
           splashColor: Colors.white,
@@ -119,7 +123,7 @@ class _BottomNavDrawerState extends State<BottomNavDrawer> {
         Text(
           itemTxt,
           style: TextStyle(
-            color: currentIndex == bottomIndex
+            color: BottomNavDrawer.currentIndex == bottomIndex
                 ? const Color.fromARGB(255, 0, 80, 72)
                 : Colors.grey.shade400,
             fontWeight: FontWeight.bold,

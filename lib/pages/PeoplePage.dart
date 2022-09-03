@@ -2,18 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ChatsPage extends StatefulWidget {
-  const ChatsPage({Key? key}) : super(key: key);
+class PeoplePage extends StatefulWidget {
+  const PeoplePage({Key? key}) : super(key: key);
 
   @override
-  State<ChatsPage> createState() => _ChatsPageState();
+  State<PeoplePage> createState() => _PeoplePageState();
 }
 
 final _auth = FirebaseAuth.instance;
 final _firestore = FirebaseFirestore.instance;
 late User signedUser;
 
-class _ChatsPageState extends State<ChatsPage> {
+class _PeoplePageState extends State<PeoplePage> {
   @override
   void initState() {
     super.initState();
@@ -78,35 +78,6 @@ class _ChatsPageState extends State<ChatsPage> {
             const SizedBox(
               height: 10,
             ),
-            SizedBox(
-              height: 100,
-              child: Card(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(
-                      color: Color.fromARGB(255, 232, 244, 242), width: 1),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                margin: const EdgeInsets.all(0.0),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          StateProfile(imageName: 'face1.jpeg'),
-                          StateProfile(imageName: 'face2.jpg'),
-                          StateProfile(imageName: 'face3.jpeg'),
-                          StateProfile(imageName: 'face4.png'),
-                          StateProfile(imageName: 'face5.jpg'),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
             const MessageStreamBuilder(),
           ],
         ),
@@ -158,7 +129,7 @@ class MessageStreamBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection("chat").orderBy("usrTime").snapshots(),
+        stream: _firestore.collection("user").snapshots(),
         builder: (context, snapshot) {
           List<MessageLine> messageWiedgets = [];
 

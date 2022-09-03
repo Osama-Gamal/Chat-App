@@ -1,4 +1,5 @@
 import 'package:firebase_project/pages/ChatsPage.dart';
+import 'package:firebase_project/pages/PeoplePage.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix4_transform/matrix4_transform.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -7,6 +8,7 @@ import '../widgets/BottomNavDrawer.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String screenRoute = 'MainScreen';
+  static PageController controller = PageController();
 
   @override
   _HomeScreenState createState() => new _HomeScreenState();
@@ -23,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     //const size = 200.0;
     final Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 0, 80, 72),
       body: Center(
@@ -95,18 +98,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               Stack(
                 children: [
                   Container(
-                      height: size.height * 0.8854,
-                      padding: const EdgeInsets.all(1.0),
-                      decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 232, 244, 242),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(18),
-                            topRight: Radius.circular(18)),
+                    height: size.height * 0.8854,
+                    padding: const EdgeInsets.all(1.0),
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 232, 244, 242),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(18),
+                          topRight: Radius.circular(18)),
+                    ),
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 12),
+                      child: PageView(
+                        onPageChanged: (value) {
+                          setState(() {
+                            BottomNavDrawer.currentIndex = value;
+                          });
+                        },
+                        controller: HomeScreen.controller,
+                        children: const <Widget>[
+                          Center(
+                            child: ChatsPage(),
+                          ),
+                          Center(
+                            child: PeoplePage(),
+                          ),
+                          Center(
+                            child: Text('Third Page'),
+                          ),
+                        ],
                       ),
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 12),
-                        child: const ChatsPage(),
-                      )),
+                    ),
+                  ),
                   BottomNavDrawer(),
                 ],
               ),
