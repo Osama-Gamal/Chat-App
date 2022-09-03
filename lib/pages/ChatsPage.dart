@@ -171,18 +171,19 @@ class MessageStreamBuilder extends StatelessWidget {
           for (var message in messages) {
             final usrImage = message.get("usrImage");
             final usrName = message.get('usrName');
+            final usrBio = message.get('usrBio');
             final currentUser = signedUser.email;
 
             final messageWidget = MessageLine(
               usrName: usrName,
               usrImage: usrImage,
+              usrBio: usrBio,
               isMe: currentUser == usrName,
             );
             messageWiedgets.add(messageWidget);
           }
           return Expanded(
             child: ListView(
-              reverse: true,
               padding: const EdgeInsets.symmetric(
                 horizontal: 0,
               ),
@@ -194,20 +195,23 @@ class MessageStreamBuilder extends StatelessWidget {
 }
 
 class MessageLine extends StatelessWidget {
-  const MessageLine({this.usrName, this.usrImage, required this.isMe, key})
+  const MessageLine(
+      {this.usrName, this.usrImage, this.usrBio, required this.isMe, key})
       : super(key: key);
 
   final String? usrName;
   final String? usrImage;
+  final String? usrBio;
+
   final bool isMe;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
+      padding: const EdgeInsets.all(1.0),
       child: Container(
         width: double.infinity,
-        height: 100,
+        height: 70,
         padding: const EdgeInsets.all(8.0),
         color: Colors.white,
         child: Column(
@@ -225,10 +229,30 @@ class MessageLine extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                Text(
-                  usrName!,
-                  style: const TextStyle(
-                    fontSize: 12,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      usrName!,
+                      style: const TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                    Text(
+                      usrBio!,
+                      style: const TextStyle(
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Container(
+                    width: 6,
+                    height: 6,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color.fromARGB(255, 0, 80, 72)),
                   ),
                 ),
               ],
@@ -239,51 +263,3 @@ class MessageLine extends StatelessWidget {
     );
   }
 }
-
-/*
-class MessageLine extends StatelessWidget {
-  const MessageLine({this.text, this.sender, required this.isMe, key})
-      : super(key: key);
-
-  final String? text;
-  final String? sender;
-  final bool isMe;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          Text(
-            "$sender",
-            style: const TextStyle(fontSize: 12, color: Colors.black45),
-          ),
-          Material(
-            color: isMe ? Colors.blue[800] : Colors.green,
-            borderRadius: isMe
-                ? const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30))
-                : const BorderRadius.only(
-                    topRight: Radius.circular(30),
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30)),
-            elevation: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "$text",
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-*/
