@@ -104,8 +104,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             topRight: Radius.circular(18)),
                       ),
                       child: Container(
-                        margin: EdgeInsets.only(top: 12),
-                        child: ChatsPage(),
+                        margin: const EdgeInsets.only(top: 12),
+                        child: const ChatsPage(),
                       )),
                   BottomNavDrawer(),
                 ],

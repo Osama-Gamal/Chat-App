@@ -11,14 +11,15 @@ class BottomNavDrawer extends StatefulWidget {
 class _BottomNavDrawerState extends State<BottomNavDrawer> {
   bool _expanded = true;
   int currentIndex = 0;
+
+  setBottomBarIndex(index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    setBottomBarIndex(index) {
-      setState(() {
-        currentIndex = index;
-      });
-    }
-
     final Size size = MediaQuery.of(context).size;
 
     return Column(
@@ -62,62 +63,20 @@ class _BottomNavDrawerState extends State<BottomNavDrawer> {
                                   ])),
                               child: const Icon(Icons.arrow_upward))),
                     ),
-                    Container(
+                    SizedBox(
                       width: size.width,
                       height: 80,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Column(
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.home,
-                                  color: currentIndex == 0
-                                      ? const Color.fromARGB(255, 0, 80, 72)
-                                      : Colors.grey.shade400,
-                                ),
-                                onPressed: () {
-                                  setBottomBarIndex(0);
-                                },
-                                splashColor: Colors.white,
-                              ),
-                              Text("data"),
-                            ],
-                          ),
-                          IconButton(
-                              icon: Icon(
-                                Icons.restaurant_menu,
-                                color: currentIndex == 1
-                                    ? const Color.fromARGB(255, 0, 80, 72)
-                                    : Colors.grey.shade400,
-                              ),
-                              onPressed: () {
-                                setBottomBarIndex(1);
-                              }),
+                          drawerItem('Home', Icons.home, 0),
+                          drawerItem(
+                              'Peoples', Icons.supervised_user_circle, 1),
                           Container(
                             width: size.width * 0.20,
                           ),
-                          IconButton(
-                              icon: Icon(
-                                Icons.bookmark,
-                                color: currentIndex == 2
-                                    ? const Color.fromARGB(255, 0, 80, 72)
-                                    : Colors.grey.shade400,
-                              ),
-                              onPressed: () {
-                                setBottomBarIndex(2);
-                              }),
-                          IconButton(
-                              icon: Icon(
-                                Icons.notifications,
-                                color: currentIndex == 3
-                                    ? const Color.fromARGB(255, 0, 80, 72)
-                                    : Colors.grey.shade400,
-                              ),
-                              onPressed: () {
-                                setBottomBarIndex(3);
-                              }),
+                          drawerItem('Events', Icons.event, 2),
+                          drawerItem('Profile', Icons.person, 3),
                         ],
                       ),
                     ),
@@ -136,6 +95,34 @@ class _BottomNavDrawerState extends State<BottomNavDrawer> {
                 )
               ],
             ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Column drawerItem(String itemTxt, IconData itemIcon, int bottomIndex) {
+    return Column(
+      children: [
+        IconButton(
+          icon: Icon(
+            itemIcon,
+            color: currentIndex == bottomIndex
+                ? const Color.fromARGB(255, 0, 80, 72)
+                : Colors.grey.shade400,
+          ),
+          onPressed: () {
+            setBottomBarIndex(bottomIndex);
+          },
+          splashColor: Colors.white,
+        ),
+        Text(
+          itemTxt,
+          style: TextStyle(
+            color: currentIndex == bottomIndex
+                ? const Color.fromARGB(255, 0, 80, 72)
+                : Colors.grey.shade400,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ],

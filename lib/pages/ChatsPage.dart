@@ -38,7 +38,7 @@ class _ChatsPageState extends State<ChatsPage> {
     return Container(
       color: const Color.fromARGB(255, 232, 244, 242),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
             Row(
@@ -137,10 +137,10 @@ class StateProfile extends StatelessWidget {
               backgroundImage: AssetImage('assets/images/$imageName'),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 2,
           ),
-          Text(
+          const Text(
             "Jasmin Bill",
             style: TextStyle(
               fontSize: 12,
@@ -207,57 +207,73 @@ class MessageLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(1.0),
-      child: Container(
-        width: double.infinity,
-        height: 70,
-        padding: const EdgeInsets.all(8.0),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                const CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 0, 80, 72),
-                  radius: 25,
-                  child: CircleAvatar(
-                    radius: 22,
-                    backgroundImage: AssetImage('assets/images/face7.jpg'),
+    return InkWell(
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.all(1.0),
+        child: Container(
+          width: double.infinity,
+          height: 70,
+          padding: const EdgeInsets.all(8.0),
+          //color: Colors.white,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 0, 80, 72),
+                    radius: 24,
+                    child: CircleAvatar(
+                      radius: 21,
+                      backgroundImage: AssetImage('assets/images/face7.jpg'),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      usrName!,
-                      style: const TextStyle(
-                        fontSize: 12,
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        usrName!,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      usrBio!,
-                      style: const TextStyle(
-                        fontSize: 10,
+                      const SizedBox(
+                        height: 5,
                       ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Container(
+                      Text(
+                        usrBio!,
+                        style: const TextStyle(
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  Container(
                     width: 6,
                     height: 6,
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Color.fromARGB(255, 0, 80, 72)),
                   ),
-                ),
-              ],
-            )
-          ],
+                  IconButton(
+                    onPressed: (() => {}),
+                    icon: const Icon(
+                      Icons.more_vert,
+                      color: Color.fromARGB(255, 0, 80, 72),
+                      size: 20,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
