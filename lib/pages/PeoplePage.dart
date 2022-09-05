@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project/model/DataPasser.dart';
+import 'package:firebase_project/screens/chatScreen.dart';
 import 'package:flutter/material.dart';
 
 class PeoplePage extends StatefulWidget {
@@ -143,12 +145,14 @@ class MessageStreamBuilder extends StatelessWidget {
             final usrImage = message.get("usrImage");
             final usrName = message.get('usrName');
             final usrBio = message.get('usrBio');
+            final usrID = message.get('usrID');
             final currentUser = signedUser.email;
 
             final messageWidget = MessageLine(
               usrName: usrName,
               usrImage: usrImage,
               usrBio: usrBio,
+              usrID: usrID,
               isMe: currentUser == usrName,
             );
             messageWiedgets.add(messageWidget);
@@ -167,19 +171,31 @@ class MessageStreamBuilder extends StatelessWidget {
 
 class MessageLine extends StatelessWidget {
   const MessageLine(
-      {this.usrName, this.usrImage, this.usrBio, required this.isMe, key})
+      {this.usrName,
+      this.usrImage,
+      this.usrBio,
+      this.usrID,
+      required this.isMe,
+      key})
       : super(key: key);
 
   final String? usrName;
   final String? usrImage;
   final String? usrBio;
+  final String? usrID;
 
   final bool isMe;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, ChatScreen.screenRoute);
+        DataPasser.UserID = usrID!;
+        DataPasser.UserImg = usrImage!;
+        DataPasser.UserBio = usrBio!;
+        DataPasser.UserName = usrName!;
+      },
       child: Padding(
         padding: const EdgeInsets.all(1.0),
         child: Container(

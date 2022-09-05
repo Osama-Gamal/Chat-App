@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project/model/DataPasser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String screenRoute = 'ChatScreen';
@@ -17,7 +19,7 @@ late User signedUser;
 
 class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
-  String? messageText;
+  String? messageText = "test";
   final messageTextController = TextEditingController();
 
   @override
@@ -45,7 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }*/
 
-  void getMessageStreams() async {
+  /*void getMessageStreams() async {
     await for (var snapshot in _firestore.collection("messages").snapshots()) {
       for (var message in snapshot.docs) {
         print(message.data());
@@ -53,77 +55,173 @@ class _ChatScreenState extends State<ChatScreen> {
     }
     ;
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 232, 244, 242),
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Row(children: const [
-          Icon(Icons.chat),
-          SizedBox(
-            width: 10,
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color.fromARGB(255, 0, 80, 72),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
           ),
-          Text("Chat Home"),
+        ),
+        toolbarHeight: 70,
+        title: Row(children: [
+          const CircleAvatar(
+            radius: 20,
+            backgroundImage: AssetImage("assets/images/face7.jpg"),
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                DataPasser.UserName,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                DataPasser.UserBio,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
         ]),
         actions: [
           IconButton(
               onPressed: () {
-                _auth.signOut();
-                Navigator.pop(context);
+                /*_auth.signOut();
+                Navigator.pop(context);*/
               },
-              icon: const Icon(Icons.close))
+              icon: const Icon(Icons.more_vert))
         ],
       ),
       body: SafeArea(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const MessageStreamBuilder(),
-          Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                top: BorderSide(color: Colors.blue, width: 2),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const MessageStreamBuilder(),
+            Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                      color: Color.fromARGB(255, 0, 80, 72), width: 2),
+                ),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 350,
+                    height: 45,
+                    decoration: const BoxDecoration(
+                        color: Color.fromARGB(255, 190, 223, 219),
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Icon(
+                          Icons.emoji_emotions,
+                          size: 30,
+                          color: Color.fromARGB(255, 0, 80, 72),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            controller: messageTextController,
+                            onChanged: (value) {
+                              messageText = value;
+                              setState(() {});
+                            },
+                            decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                hintText: "Write Your Message Here...",
+                                border: InputBorder.none),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const RotationTransition(
+                          turns: AlwaysStoppedAnimation(45 / 360),
+                          child: Icon(
+                            Icons.attach_file,
+                            size: 30,
+                            color: Color.fromARGB(255, 0, 80, 72),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Icon(
+                          Icons.image,
+                          size: 30,
+                          color: Color.fromARGB(255, 0, 80, 72),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Visibility(
+                    visible: messageTextController.text.isEmpty,
+                    child: CircleAvatar(
+                      backgroundColor: const Color.fromARGB(255, 0, 80, 72),
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.mic),
+                        iconSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: messageTextController.text.isNotEmpty,
+                    child: CircleAvatar(
+                      backgroundColor: const Color.fromARGB(255, 0, 80, 72),
+                      child: IconButton(
+                        onPressed: () {
+                          _firestore
+                              .collection('messages')
+                              .doc(signedUser.uid + DataPasser.UserID)
+                              .set({
+                            'text': messageText,
+                            'sender': signedUser.email,
+                            'conversation': signedUser.uid + DataPasser.UserID,
+                            'time': FieldValue.serverTimestamp(),
+                          });
+                          messageTextController.clear();
+                        },
+                        icon: const Icon(Icons.send),
+                        iconSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: TextField(
-                    onChanged: (value) {
-                      messageText = value;
-                    },
-                    controller: messageTextController,
-                    decoration: const InputDecoration(
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                        hintText: "Write Your Message Here...",
-                        border: InputBorder.none),
-                  ),
-                ),
-                TextButton(
-                    onPressed: () {
-                      _firestore.collection('messages').add({
-                        'text': messageText,
-                        'sender': signedUser.email,
-                        'time': FieldValue.serverTimestamp(),
-                      });
-                      messageTextController.clear();
-                    },
-                    child: const Text(
-                      "Send",
-                      style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    )),
-              ],
-            ),
-          ),
-        ],
-      )),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -134,7 +232,12 @@ class MessageStreamBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection("messages").orderBy("time").snapshots(),
+        stream: _firestore
+            .collection('messages')
+            .doc(signedUser.uid + DataPasser.UserID)
+            .collection('sender')
+            .orderBy("time")
+            .snapshots(),
         builder: (context, snapshot) {
           List<MessageLine> messageWiedgets = [];
 

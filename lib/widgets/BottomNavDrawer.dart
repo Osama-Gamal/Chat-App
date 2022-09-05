@@ -27,7 +27,7 @@ class _BottomNavDrawerState extends State<BottomNavDrawer> {
       children: [
         Container(
           alignment: Alignment.bottomCenter,
-          height: size.height * 0.885,
+          height: size.height * 0.885, //85
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 1500),
             curve: Curves.fastLinearToSlowEaseIn,

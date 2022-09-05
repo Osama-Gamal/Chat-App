@@ -53,7 +53,7 @@ class _ChatsPageState extends State<ChatsPage> {
                       children: [
                         const Icon(Icons.search),
                         SizedBox(
-                          width: size.width * 0.73,
+                          width: size.width * 0.7,
                           height: 20,
                           child: const TextField(
                             decoration: InputDecoration(
