@@ -199,13 +199,24 @@ class _ChatScreenState extends State<ChatScreen> {
                       backgroundColor: const Color.fromARGB(255, 0, 80, 72),
                       child: IconButton(
                         onPressed: () {
-                          _firestore
+                          /*_firestore
                               .collection('messages')
                               .doc(signedUser.uid + DataPasser.UserID)
                               .set({
                             'text': messageText,
                             'sender': signedUser.email,
                             'conversation': signedUser.uid + DataPasser.UserID,
+                            'time': FieldValue.serverTimestamp(),
+                          });*/
+                          List<String> members = [
+                            signedUser.uid,
+                            DataPasser.UserID,
+                          ];
+                          _firestore.collection('rooms').add({
+                            'text': messageText,
+                            'sender': signedUser.email,
+                            'conversation': signedUser.uid + DataPasser.UserID,
+                            'members': members,
                             'time': FieldValue.serverTimestamp(),
                           });
                           messageTextController.clear();
@@ -232,12 +243,13 @@ class MessageStreamBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _firestore
+        stream: /*_firestore
             .collection('messages')
             .doc(signedUser.uid + DataPasser.UserID)
             .collection('sender')
             .orderBy("time")
-            .snapshots(),
+            .snapshots(),*/
+            _firestore.collection('rooms').orderBy("time").snapshots(),
         builder: (context, snapshot) {
           List<MessageLine> messageWiedgets = [];
 
@@ -248,16 +260,18 @@ class MessageStreamBuilder extends StatelessWidget {
           }
           final messages = snapshot.data!.docs.reversed;
           for (var message in messages) {
-            final messageTxt = message.get("text");
-            final messageSender = message.get('sender');
-            final currentUser = signedUser.email;
+            if (message.get('members').contains(signedUser.uid)) {
+              final messageTxt = message.get("text");
+              final messageSender = message.get('sender');
+              final currentUser = signedUser.email;
 
-            final messageWidget = MessageLine(
-              sender: messageSender,
-              text: messageTxt,
-              isMe: currentUser == messageSender,
-            );
-            messageWiedgets.add(messageWidget);
+              final messageWidget = MessageLine(
+                sender: messageSender,
+                text: messageTxt,
+                isMe: currentUser == messageSender,
+              );
+              messageWiedgets.add(messageWidget);
+            }
           }
           return Expanded(
             child: ListView(

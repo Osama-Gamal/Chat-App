@@ -157,8 +157,15 @@ class MessageStreamBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /* Future<DocumentSnapshot> getDocument() async {
+      return await _firestore
+          .collection("user")
+          .doc('G2trdbl9WOiPURcPfggX')
+          .get();
+    }*/
+
     return StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection("chat").orderBy("usrTime").snapshots(),
+        stream: _firestore.collection("rooms").orderBy("time").snapshots(),
         builder: (context, snapshot) {
           List<MessageLine> messageWiedgets = [];
 
@@ -169,19 +176,28 @@ class MessageStreamBuilder extends StatelessWidget {
           }
           final messages = snapshot.data!.docs.reversed;
           for (var message in messages) {
-            final usrImage = message.get("usrImage");
-            final usrName = message.get('usrName');
-            final usrBio = message.get('usrBio');
-            final currentUser = signedUser.email;
+            if (message.get('members').contains(signedUser.uid)) {
+              final usrImage = _firestore
+                  .collection("user")
+                  .doc('G2trdbl9WOiPURcPfggX')
+                  .get();
+              try {
+                print('this item specific ' + usrImage.toString());
+              } catch (e) {}
 
-            final messageWidget = MessageLine(
-              usrName: usrName,
-              usrImage: usrImage,
-              usrBio: usrBio,
-              isMe: currentUser == usrName,
-            );
-            messageWiedgets.add(messageWidget);
+              final usrName = 'gfdg'; //message.get('usrName');
+              final usrBio = 'fdsfsdg'; //message.get('usrBio');
+              final currentUser = 'fdsf'; //signedUser.email;
+              final messageWidget = MessageLine(
+                usrName: usrName,
+                usrImage: "usrImage",
+                usrBio: usrBio,
+                isMe: currentUser == usrName,
+              );
+              messageWiedgets.add(messageWidget);
+            }
           }
+
           return Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(
