@@ -209,8 +209,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             'time': FieldValue.serverTimestamp(),
                           });*/
                           List<String> members = [
-                            signedUser.uid,
                             DataPasser.UserID,
+                            signedUser.uid,
                           ];
                           _firestore.collection('rooms').add({
                             'text': messageText,

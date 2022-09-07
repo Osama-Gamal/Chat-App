@@ -157,12 +157,25 @@ class MessageStreamBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /* Future<DocumentSnapshot> getDocument() async {
+    Future<DocumentSnapshot> getDocument() async {
       return await _firestore
           .collection("user")
           .doc('G2trdbl9WOiPURcPfggX')
           .get();
-    }*/
+    }
+
+    Map<String, dynamic>? userMap = {};
+    void getUserStreams(ownerID) async {
+      await for (var snapshot in _firestore
+          .collection("user")
+          .where('usrID', isEqualTo: ownerID)
+          .snapshots()) {
+        for (var user in snapshot.docs) {
+          //print('this is data ${user.data()}');
+          userMap = user.data();
+        }
+      }
+    }
 
     return StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection("rooms").orderBy("time").snapshots(),
@@ -174,27 +187,26 @@ class MessageStreamBuilder extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          final messages = snapshot.data!.docs.reversed;
-          for (var message in messages) {
-            if (message.get('members').contains(signedUser.uid)) {
-              final usrImage = _firestore
-                  .collection("user")
-                  .doc('G2trdbl9WOiPURcPfggX')
-                  .get();
+          final rooms = snapshot.data!.docs.reversed;
+          for (var room in rooms) {
+            if (room.get('members').contains(signedUser.uid)) {
               try {
-                print('this item specific ' + usrImage.toString());
-              } catch (e) {}
-
-              final usrName = 'gfdg'; //message.get('usrName');
-              final usrBio = 'fdsfsdg'; //message.get('usrBio');
-              final currentUser = 'fdsf'; //signedUser.email;
-              final messageWidget = MessageLine(
-                usrName: usrName,
-                usrImage: "usrImage",
-                usrBio: usrBio,
-                isMe: currentUser == usrName,
-              );
-              messageWiedgets.add(messageWidget);
+                getUserStreams(room.get('members')[0]);
+                final usrImage = userMap!['usrName'];
+                final usrName = userMap!['usrName']; //message.get('usrName');
+                final usrBio = 'fdsfsdg'; //message.get('usrBio');
+                final currentUser = 'fdsf'; //signedUser.email;
+                final messageWidget = MessageLine(
+                  usrName: usrName,
+                  usrImage: "usrImage",
+                  usrBio: usrBio,
+                  isMe: currentUser == usrName,
+                );
+                messageWiedgets.add(messageWidget);
+                //print('this item specific ' + usrImage.toString());
+              } catch (e) {
+                print('Error with data : $e');
+              }
             }
           }
 
@@ -212,12 +224,16 @@ class MessageStreamBuilder extends StatelessWidget {
 
 class MessageLine extends StatelessWidget {
   const MessageLine(
-      {this.usrName, this.usrImage, this.usrBio, required this.isMe, key})
+      {required this.usrName,
+      required this.usrImage,
+      required this.usrBio,
+      required this.isMe,
+      key})
       : super(key: key);
 
-  final String? usrName;
-  final String? usrImage;
-  final String? usrBio;
+  final String usrName;
+  final String usrImage;
+  final String usrBio;
 
   final bool isMe;
 
