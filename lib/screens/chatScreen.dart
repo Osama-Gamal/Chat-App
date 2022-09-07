@@ -26,6 +26,8 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     getCurrentUser();
+    getMessageStreams(
+        '8Y4ZL1WQHxVimATiXL5fcsA6V8j2', 'fLxUu4c60Heh0lct0kY9To9UR2g1');
   }
 
   void getCurrentUser() {
@@ -37,6 +39,20 @@ class _ChatScreenState extends State<ChatScreen> {
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  Map<String, dynamic>? messages = {};
+  void getMessageStreams(myID, UserID) async {
+    await for (var snapshot in _firestore
+        .collection("rooms")
+        .where('members', arrayContains: myID)
+        .snapshots()) {
+      for (var message in snapshot.docs) {
+        //print('this is data ${user.data()}');
+        messages = message.data();
+        print(messages);
+      }
     }
   }
 
